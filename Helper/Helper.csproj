@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Analyser.cs" />
     <Compile Include="Riot.cs" />
+    <Compile Include="SquareBitmapHelper.cs" />
     <Compile Include="Window\WindowCapture.cs" />
     <Compile Include="Window\DesktopWindow.cs" />
     <Compile Include="Window\GraphicalWindow.cs" />

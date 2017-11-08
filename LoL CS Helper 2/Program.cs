@@ -23,6 +23,10 @@ namespace LoL_CS_Helper_2
             {
                 var bmp = gWindow.GetRegionBitmap(item);
                 bmp.Save(item.Name + ".png");
+
+                var champ = SquareBitmapHelper.IsChampion(bmp);
+                if (champ)
+                    Console.WriteLine("{0}: {1}", item.Name, champ);
             }
 
             Console.WriteLine("Done");
