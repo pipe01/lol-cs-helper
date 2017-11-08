@@ -42,8 +42,8 @@ namespace Helper
             {
                 int y = startY + (i * 80);
 
-                AddChampionRegion(false, true, i, "AllyChoosing" + i, 18, y, squareSize, squareSize);
-                AddChampionRegion(false, false, i, "Ally" + i, 56, y, squareSize, squareSize);
+                AddChampionRegion(false, false, i, "Ally" + i, 18, y, squareSize, squareSize);
+                AddChampionRegion(false, true, i, "AllyChoosing" + i, 56, y, squareSize, squareSize);
             }
 
             //Right side champion squares
