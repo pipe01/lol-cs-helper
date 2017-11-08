@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Helper.Launcher_Window
 {
-    internal static class WindowInfo
+    internal static class Window
     {
         #region WinApi
         [DllImport("user32.dll")]
