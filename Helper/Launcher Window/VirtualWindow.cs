@@ -95,7 +95,6 @@ namespace Helper.Launcher_Window
             /// Find region by name
             /// </summary>
             /// <param name="key">Region name</param>
-            /// <returns></returns>
             public WindowRegion Find(string key) => InnerList.Where(o => o.Name.Equals(key)).FirstOrDefault();
 
             /// <summary>
