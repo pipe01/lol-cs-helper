@@ -16,7 +16,7 @@ namespace Helper.Launcher_Window
         private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
         #endregion
 
-        public static Bitmap PrintWindow(IntPtr hwnd)
+        private static Bitmap PrintWindow(IntPtr hwnd)
         {
             var rect = Window.Bounds;
 
