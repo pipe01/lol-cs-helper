@@ -16,7 +16,7 @@ namespace Helper.Launcher_Window
 
         private static Bitmap PrintWindow(IntPtr hwnd)
         {
-            var rect = Window.Bounds;
+            var rect = DesktopWindow.Bounds;
 
             Bitmap bmp = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
             Graphics gfx = Graphics.FromImage(bmp);
@@ -35,7 +35,7 @@ namespace Helper.Launcher_Window
         /// </summary>
         public static Bitmap CaptureWindow()
         {
-            var pointer = Window.Pointer;
+            var pointer = DesktopWindow.Pointer;
 
             if (pointer == IntPtr.Zero)
                 return null;

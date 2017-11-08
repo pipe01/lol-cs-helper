@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Launcher Window\Capture.cs" />
-    <Compile Include="Launcher Window\Window.cs" />
+    <Compile Include="Launcher Window\DesktopWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
