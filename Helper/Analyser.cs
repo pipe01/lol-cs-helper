@@ -50,7 +50,7 @@ namespace Helper
             for (int i = 0; i < 5; i++)
             {
                 int y = startY + (i * 80);
-                AddChampionRegion(true, true, i, "EnemyChoosing" + i, 1240, y, squareSize, squareSize);
+                AddChampionRegion(true, true, i, "EnemyChoosing" + i, 1164, y, squareSize, squareSize);
                 AddChampionRegion(true, false, i, "Enemy" + i, 1202, y, squareSize, squareSize);
             }
         }
