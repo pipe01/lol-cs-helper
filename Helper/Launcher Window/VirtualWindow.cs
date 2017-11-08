@@ -50,6 +50,8 @@ namespace Helper.Launcher_Window
         {
             private List<WindowRegion> InnerList = new List<WindowRegion>();
 
+            public WindowRegion this[string key] => InnerList.Where(o => o.Name == key).FirstOrDefault();
+
             public int Count => InnerList.Count;
 
             public bool IsReadOnly => false;
