@@ -50,7 +50,7 @@ namespace Helper.Launcher_Window
         {
             private List<WindowRegion> InnerList = new List<WindowRegion>();
 
-            public WindowRegion this[string key] => InnerList.Where(o => o.Name.Equals(key)).FirstOrDefault();
+            public WindowRegion this[string key] => Find(key);
 
             /// <summary>
             /// Region count.
@@ -90,6 +90,13 @@ namespace Helper.Launcher_Window
             /// </summary>
             /// <param name="key">Name of the region</param>
             public bool Contains(string key) => InnerList.Any(o => o.Name.Equals(key));
+
+            /// <summary>
+            /// Find region by name
+            /// </summary>
+            /// <param name="key">Region name</param>
+            /// <returns></returns>
+            public WindowRegion Find(string key) => InnerList.Where(o => o.Name.Equals(key)).FirstOrDefault();
 
             /// <summary>
             /// Copy regions to array.
