@@ -29,27 +29,27 @@ namespace Helper.Launcher_Window
             /// <summary>
             /// Region name.
             /// </summary>
-            public string Name { get; set; }
+            public string Name { get; private set; }
 
             /// <summary>
             /// X position from 0.0 to 1.0.
             /// </summary>
-            public double RelativeX { get; set; }
+            public double RelativeX { get; private set; }
 
             /// <summary>
             /// Y position from 0.0 to 1.0.
             /// </summary>
-            public double RelativeY { get; set; }
+            public double RelativeY { get; private set; }
 
             /// <summary>
             /// Width from 0.0 to 1.0.
             /// </summary>
-            public double RelativeWidth { get; set; }
+            public double RelativeWidth { get; private set; }
 
             /// <summary>
             /// Height from 0.0 to 1.0.
             /// </summary>
-            public double RelativeHeight { get; set; }
+            public double RelativeHeight { get; private set; }
 
             /// <summary>
             /// Create <see cref="WindowRegion"/> from absolute measurements.
