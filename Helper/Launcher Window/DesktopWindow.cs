@@ -14,7 +14,6 @@ namespace Helper.Launcher_Window
     /// </summary>
     internal static class DesktopWindow
     {
-        #region WinApi
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
@@ -33,7 +32,6 @@ namespace Helper.Launcher_Window
             public int Right;       // x position of lower-right corner
             public int Bottom;      // y position of lower-right corner
         }
-        #endregion
 
         /// <summary>
         /// The window's process name
