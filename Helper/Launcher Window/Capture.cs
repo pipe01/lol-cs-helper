@@ -11,10 +11,8 @@ namespace Helper.Launcher_Window
 {
     internal static class Capture
     {
-        #region WinApi
         [DllImport("user32.dll")]
         private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
-        #endregion
 
         private static Bitmap PrintWindow(IntPtr hwnd)
         {
@@ -30,6 +28,19 @@ namespace Helper.Launcher_Window
             gfx.Dispose();
 
             return bmp;
+        }
+
+        /// <summary>
+        /// Capture the launcher window. If it's not open, returns null
+        /// </summary>
+        public static Bitmap CaptureWindow()
+        {
+            var pointer = Window.Pointer;
+
+            if (pointer == IntPtr.Zero)
+                return null;
+
+            return PrintWindow(pointer);
         }
     }
 }
