@@ -161,5 +161,11 @@ namespace Helper
         /// Region collection.
         /// </summary>
         public WindowRegionCollection Regions { get; private set; } = new WindowRegionCollection();
+
+        private GraphicalWindow _GWindow;
+        /// <summary>
+        /// Get the graphical window associated with this window.
+        /// </summary>
+        public GraphicalWindow GraphicsWindow => _GWindow ?? (_GWindow = new GraphicalWindow(this));
     }
 }

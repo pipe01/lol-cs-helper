@@ -35,12 +35,6 @@ namespace Helper
                 string str = await reader.ReadToEndAsync();
                 return str;
             }
-
-            /*WebClient client = new WebClient();
-            string str = await client.DownloadStringTaskAsync(url);
-            client.Dispose();
-
-            return str;*/
         }
 
         /// <summary>

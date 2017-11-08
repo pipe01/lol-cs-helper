@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyser.cs" />
     <Compile Include="Riot.cs" />
     <Compile Include="Window\WindowCapture.cs" />
     <Compile Include="Window\DesktopWindow.cs" />
