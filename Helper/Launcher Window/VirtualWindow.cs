@@ -17,30 +17,59 @@ namespace Helper.Launcher_Window
         /// </summary>
         public class WindowRegion
         {
+            public WindowRegion(string name, double relx, double rely, double relw, double relh)
+            {
+                this.Name = name;
+                this.RelativeX = relx;
+                this.RelativeY = rely;
+                this.RelativeWidth = relw;
+                this.RelativeHeight = relh;
+            }
+
             /// <summary>
             /// Region name.
             /// </summary>
             public string Name { get; set; }
 
             /// <summary>
-            /// X position from 0.0 to 1.0
+            /// X position from 0.0 to 1.0.
             /// </summary>
             public double RelativeX { get; set; }
 
             /// <summary>
-            /// Y position from 0.0 to 1.0
+            /// Y position from 0.0 to 1.0.
             /// </summary>
             public double RelativeY { get; set; }
 
             /// <summary>
-            /// Width from 0.0 to 1.0
+            /// Width from 0.0 to 1.0.
             /// </summary>
             public double RelativeWidth { get; set; }
 
             /// <summary>
-            /// Height from 0.0 to 1.0
+            /// Height from 0.0 to 1.0.
             /// </summary>
             public double RelativeHeight { get; set; }
+
+            /// <summary>
+            /// Create <see cref="WindowRegion"/> from absolute measurements.
+            /// </summary>
+            /// <param name="name">Region name.</param>
+            /// <param name="x">Absolute X.</param>
+            /// <param name="y">Absolute Y.</param>
+            /// <param name="w">Absolute width.</param>
+            /// <param name="h">Absolute height.</param>
+            /// <param name="windowW">Width of the window that the measurements belong to.</param>
+            /// <param name="windowH">It's height.</param>
+            public static WindowRegion FromAbsolute(string name, int x, int y, int w, int h, int windowW, int windowH)
+            {
+                double rx = (double)x / windowW;
+                double ry = (double)y / windowH;
+                double rw = (double)w / windowW;
+                double rh = (double)h / windowH;
+
+                return new WindowRegion(name, rx, ry, rh, rw);
+            }
         }
 
         /// <summary>
