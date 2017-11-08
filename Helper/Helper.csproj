@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapUtil.cs" />
     <Compile Include="Launcher Window\Capture.cs" />
     <Compile Include="Launcher Window\DesktopWindow.cs" />
     <Compile Include="Launcher Window\GraphicalWindow.cs" />
