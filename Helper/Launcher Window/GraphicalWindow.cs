@@ -13,6 +13,12 @@ namespace Helper.Launcher_Window
     internal class GraphicalWindow
     {
         private VirtualWindow _VirtualWindow;
+        private Bitmap _WindowBitmap = new Bitmap(1, 1);
+
+        /// <summary>
+        /// Whether to capture the window every time a method is called.
+        /// </summary>
+        public bool AutoCapture { get; set; } = false;
 
         /// <summary>
         /// Construct a new <see cref="GraphicalWindow"/>.
@@ -21,6 +27,22 @@ namespace Helper.Launcher_Window
         public GraphicalWindow(VirtualWindow virtualWindow)
         {
             _VirtualWindow = virtualWindow;
+        }
+
+        private Bitmap GetWindowBitmap()
+        {
+            if (AutoCapture)
+                RefreshWindowPicture();
+
+            return _WindowBitmap;
+        }
+
+        /// <summary>
+        /// Capture the window and store it for later use.
+        /// </summary>
+        public void RefreshWindowPicture()
+        {
+            _WindowBitmap = WindowCapture.CaptureWindow();
         }
 
         /// <summary>
