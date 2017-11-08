@@ -12,7 +12,7 @@ namespace Helper
 
         public Analyser()
         {
-
+            AddRegions();
         }
 
         private void AddChampionRegion(bool enemy, bool choosing, int index, string name, int x, int y, int w, int h,
