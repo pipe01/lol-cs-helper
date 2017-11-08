@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,32 @@ namespace Helper.Launcher_Window
             /// Height from 0.0 to 1.0
             /// </summary>
             public double RelativeHeight { get; set; }
+        }
+
+        /// <summary>
+        /// Collection of window regions. See <see cref="WindowRegion"/>.
+        /// </summary>
+        public class WindowRegionCollection : ICollection<WindowRegion>
+        {
+            private List<WindowRegion> InnerList = new List<WindowRegion>();
+
+            public int Count => InnerList.Count;
+
+            public bool IsReadOnly => false;
+
+            public void Add(WindowRegion item) => InnerList.Add(item);
+
+            public void Clear() => InnerList.Clear();
+
+            public bool Remove(WindowRegion item) => InnerList.Remove(item);
+
+            public bool Contains(WindowRegion item) => InnerList.Contains(item);
+
+            public void CopyTo(WindowRegion[] array, int arrayIndex) => InnerList.CopyTo(array, arrayIndex);
+
+            public IEnumerator<WindowRegion> GetEnumerator() => InnerList.GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() => InnerList.GetEnumerator();
         }
     }
 }
