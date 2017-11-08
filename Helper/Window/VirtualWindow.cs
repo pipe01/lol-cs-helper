@@ -123,7 +123,7 @@ namespace Helper
             }
 
 
-            private void AddChampionRegion(bool enemy, bool choosing, int index, string name, int x, int y, int w, int h,
+            void AddChampionRegion(bool enemy, bool choosing, int index, string name, int x, int y, int w, int h,
                 int launcherW = 1280, int launcherH = 720)
             {
                 var region = WindowRegion.FromAbsolute(name, x, y, w, h, launcherW, launcherH);
