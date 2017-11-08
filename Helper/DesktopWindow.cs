@@ -73,5 +73,18 @@ namespace Helper
                 return Rectangle.Empty;
             }
         }
+
+        /// <summary>
+        /// Bring launcher window to front
+        /// </summary>
+        public static bool BringToForeground()
+        {
+            IntPtr handle = Pointer;
+
+            if (handle == null)
+                return false;
+
+            return SetForegroundWindow(handle);
+        }
     }
 }
