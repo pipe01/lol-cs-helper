@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Helper.Launcher_Window
 {
-    public class GraphicalWindow
+    /// <summary>
+    /// Represents the graphics of the window.
+    /// </summary>
+    internal class GraphicalWindow
     {
 
     }

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Helper.Launcher_Window
 {
+    /// <summary>
+    /// Represents the physical window.
+    /// </summary>
     internal static class DesktopWindow
     {
         #region WinApi
