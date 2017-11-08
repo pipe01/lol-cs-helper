@@ -52,24 +52,58 @@ namespace Helper.Launcher_Window
 
             public WindowRegion this[string key] => InnerList.Where(o => o.Name.Equals(key)).FirstOrDefault();
 
+            /// <summary>
+            /// Region count.
+            /// </summary>
             public int Count => InnerList.Count;
 
+            /// <summary>
+            /// Read only?
+            /// </summary>
             public bool IsReadOnly => false;
 
+            /// <summary>
+            /// Add <see cref="WindowRegion"/> to the collection.
+            /// </summary>
+            /// <param name="item"></param>
             public void Add(WindowRegion item) => InnerList.Add(item);
 
+            /// <summary>
+            /// Clear regions.
+            /// </summary>
             public void Clear() => InnerList.Clear();
 
+            /// <summary>
+            /// Remove region
+            /// </summary>
+            /// <param name="item">Region to delete</param>
             public bool Remove(WindowRegion item) => InnerList.Remove(item);
 
+            /// <summary>
+            /// Contains <see cref="WindowRegion"/>?
+            /// </summary>
+            /// <param name="item">Region to find</param>
             public bool Contains(WindowRegion item) => InnerList.Contains(item);
 
+            /// <summary>
+            /// Contains region with name '<paramref name="key"/>'?
+            /// </summary>
+            /// <param name="key">Name of the region</param>
             public bool Contains(string key) => InnerList.Any(o => o.Name.Equals(key));
 
+            /// <summary>
+            /// Copy regions to array.
+            /// </summary>
             public void CopyTo(WindowRegion[] array, int arrayIndex) => InnerList.CopyTo(array, arrayIndex);
 
+            /// <summary>
+            /// Get enumerator.
+            /// </summary>
             public IEnumerator<WindowRegion> GetEnumerator() => InnerList.GetEnumerator();
 
+            /// <summary>
+            /// Get enumerator.
+            /// </summary>
             IEnumerator IEnumerable.GetEnumerator() => InnerList.GetEnumerator();
         }
 
@@ -77,7 +111,5 @@ namespace Helper.Launcher_Window
         /// Region collection.
         /// </summary>
         public WindowRegionCollection Regions { get; private set; } = new WindowRegionCollection();
-
-
     }
 }
