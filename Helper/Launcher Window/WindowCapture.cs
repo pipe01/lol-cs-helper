@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Helper.Launcher_Window
 {
-    internal static class Capture
+    internal static class WindowCapture
     {
         [DllImport("user32.dll")]
         private static extern bool PrintWindow(IntPtr hWnd, IntPtr hdcBlt, int nFlags);
