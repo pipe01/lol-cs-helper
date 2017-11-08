@@ -63,10 +63,20 @@ namespace Helper.Launcher_Window
             if (window == null)
                 return null;
 
-            using (var fastBmp = window.FastLock())
+            //Get the region's absolute rectangle for the window
+            Rectangle regionRect = region.GetAbsoluteRect(window.Width, window.Height);
+
+            //Create region bitmap
+            Bitmap regionBitmap = new Bitmap(regionRect.Width, regionRect.Height);
+
+            //Use FastBitmapLib
+            using (var fastBmp = regionBitmap.FastLock())
             {
-                
+                //Copy the region from the window to the region bitmap
+                fastBmp.CopyRegion(window, regionRect, new Rectangle(0, 0, regionBitmap.Width, regionBitmap.Height));
             }
+
+            return regionBitmap;
         }
     }
 }
