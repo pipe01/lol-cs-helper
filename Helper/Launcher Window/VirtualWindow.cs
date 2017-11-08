@@ -89,7 +89,7 @@ namespace Helper.Launcher_Window
             /// Contains region with name '<paramref name="key"/>'?
             /// </summary>
             /// <param name="key">Name of the region</param>
-            public bool Contains(string key) => InnerList.Any(o => o.Name.Equals(key));
+            public bool ContainsKey(string key) => InnerList.Any(o => o.Name.Equals(key));
 
             /// <summary>
             /// Find region by name
