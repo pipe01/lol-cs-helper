@@ -15,7 +15,7 @@ namespace Helper.Launcher_Window
         /// <summary>
         /// Represents a region in the window. All measurements are on a unit scale.
         /// </summary>
-        public class WindowRegion
+        public struct WindowRegion
         {
             public WindowRegion(string name, double relx, double rely, double relw, double relh)
             {
