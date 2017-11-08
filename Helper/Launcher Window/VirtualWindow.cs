@@ -17,6 +17,11 @@ namespace Helper.Launcher_Window
         public class WindowRegion
         {
             /// <summary>
+            /// Region name.
+            /// </summary>
+            public string Name { get; set; }
+
+            /// <summary>
             /// X position from 0.0 to 1.0
             /// </summary>
             public double RelativeX { get; set; }
