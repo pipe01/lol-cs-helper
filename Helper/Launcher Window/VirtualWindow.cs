@@ -68,5 +68,12 @@ namespace Helper.Launcher_Window
 
             IEnumerator IEnumerable.GetEnumerator() => InnerList.GetEnumerator();
         }
+
+        /// <summary>
+        /// Region collection.
+        /// </summary>
+        public WindowRegionCollection Regions { get; private set; } = new WindowRegionCollection();
+
+
     }
 }
