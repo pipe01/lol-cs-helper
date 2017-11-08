@@ -83,7 +83,7 @@ namespace Helper
                 double rw = (double)w / windowW;
                 double rh = (double)h / windowH;
 
-                return new WindowRegion(name, rx, ry, rh, rw);
+                return new WindowRegion(name, rx, ry, rw, rh);
             }
         }
 

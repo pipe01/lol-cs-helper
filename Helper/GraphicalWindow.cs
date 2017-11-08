@@ -15,6 +15,7 @@ namespace Helper
     {
         private VirtualWindow _VirtualWindow;
         private Bitmap _WindowBitmap = new Bitmap(1, 1);
+        private bool _DebugPicture = false;
 
         /// <summary>
         /// Whether to capture the window every time a method is called.
@@ -30,6 +31,18 @@ namespace Helper
             _VirtualWindow = virtualWindow;
         }
 
+        /// <summary>
+        /// Construct a new <see cref="GraphicalWindow"/>.
+        /// </summary>
+        /// <param name="virtualWindow">Virtual window that we are going to work with.</param>
+        /// <param name="debugBitmap">Custom window picture used for debugging. The picture won't be refreshed
+        /// when calling <see cref="RefreshWindowPicture"/>.</param>
+        public GraphicalWindow(VirtualWindow virtualWindow, Bitmap debugBitmap) : this(virtualWindow)
+        {
+            _DebugPicture = true;
+            _WindowBitmap = debugBitmap;
+        }
+
         private Bitmap GetWindowBitmap()
         {
             if (AutoCapture)
@@ -43,6 +56,9 @@ namespace Helper
         /// </summary>
         public void RefreshWindowPicture()
         {
+            if (_DebugPicture)
+                return;
+
             _WindowBitmap = WindowCapture.CaptureWindow();
         }
 
