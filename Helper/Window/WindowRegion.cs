@@ -10,7 +10,7 @@ namespace Helper
     /// <summary>
     /// Represents a region in the window. All measurements are on a unit scale.
     /// </summary>
-    public struct WindowRegion
+    public class WindowRegion
     {
         public WindowRegion(string name, double relx, double rely, double relw, double relh)
         {
@@ -47,6 +47,11 @@ namespace Helper
         public double RelativeHeight { get; private set; }
 
         /// <summary>
+        /// Custom data for this region.
+        /// </summary>
+        public IWindowRegionData RegionData { get; set; }
+
+        /// <summary>
         /// Get an equivalent absolute rectangle for the specified width and height
         /// </summary>
         /// <param name="width">New absolute width</param>
@@ -81,8 +86,35 @@ namespace Helper
         }
     }
 
-    public interface IWindowRegionData
-    {
+    /// <summary>
+    /// Represents window region data.
+    /// </summary>
+    public interface IWindowRegionData { }
 
+    public enum ChampionTeam
+    {
+        Ally,
+        Enemy
+    }
+
+    /// <summary>
+    /// Represents champion data for regions.
+    /// </summary>
+    public class ChampionWindowRegionData : IWindowRegionData
+    {
+        /// <summary>
+        /// Champion team.
+        /// </summary>
+        public ChampionTeam Team { get; set; }
+
+        /// <summary>
+        /// Champion index on the team.
+        /// </summary>
+        public int Index { get; set; }
+
+        /// <summary>
+        /// Whether the summoner is still deciding this champ.
+        /// </summary>
+        public bool IsChoosing { get; set; }
     }
 }
