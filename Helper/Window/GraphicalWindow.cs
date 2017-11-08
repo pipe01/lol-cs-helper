@@ -63,7 +63,7 @@ namespace Helper
         }
 
         /// <summary>
-        /// Crop the region from the window picture.
+        /// Crop a region from the window picture.
         /// </summary>
         /// <param name="region">Window to crop.</param>
         public Bitmap GetRegionBitmap(VirtualWindow.WindowRegion region)

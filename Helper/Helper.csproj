@@ -54,6 +54,7 @@
     <Compile Include="Window\GraphicalWindow.cs" />
     <Compile Include="Window\VirtualWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Window\WindowRegion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

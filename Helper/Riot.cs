@@ -144,7 +144,7 @@ namespace Helper
 #if DEBUG
                         throw;
 #else
-                    continue;
+                        continue;
 #endif
                     }
                 }
