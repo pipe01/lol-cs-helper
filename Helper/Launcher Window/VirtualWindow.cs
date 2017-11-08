@@ -109,7 +109,7 @@ namespace Helper.Launcher_Window
             public bool Remove(WindowRegion item) => InnerList.Remove(item);
 
             /// <summary>
-            /// Contains <see cref="WindowRegion"/>?
+            /// Contains region?
             /// </summary>
             /// <param name="item">Region to find</param>
             public bool Contains(WindowRegion item) => InnerList.Contains(item);
