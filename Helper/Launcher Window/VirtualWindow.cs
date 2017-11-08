@@ -64,6 +64,8 @@ namespace Helper.Launcher_Window
 
             public bool Contains(WindowRegion item) => InnerList.Contains(item);
 
+            public bool Contains(string key) => InnerList.Any(o => o.Name.Equals(key));
+
             public void CopyTo(WindowRegion[] array, int arrayIndex) => InnerList.CopyTo(array, arrayIndex);
 
             public IEnumerator<WindowRegion> GetEnumerator() => InnerList.GetEnumerator();
