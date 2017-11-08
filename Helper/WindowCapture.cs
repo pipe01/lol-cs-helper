@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Helper.Launcher_Window
+namespace Helper
 {
     internal static class WindowCapture
     {

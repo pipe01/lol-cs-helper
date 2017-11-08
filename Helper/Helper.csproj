@@ -44,11 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitmapUtil.cs" />
-    <Compile Include="Launcher Window\WindowCapture.cs" />
-    <Compile Include="Launcher Window\DesktopWindow.cs" />
-    <Compile Include="Launcher Window\GraphicalWindow.cs" />
-    <Compile Include="Launcher Window\VirtualWindow.cs" />
+    <Compile Include="WindowCapture.cs" />
+    <Compile Include="DesktopWindow.cs" />
+    <Compile Include="GraphicalWindow.cs" />
+    <Compile Include="VirtualWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

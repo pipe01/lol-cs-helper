@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Helper.Launcher_Window
+namespace Helper
 {
     /// <summary>
     /// Represents the structure of the window.
