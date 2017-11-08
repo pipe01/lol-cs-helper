@@ -35,5 +35,15 @@ namespace Helper.Launcher_Window
         /// Get the launcher window's handle, or null if it isn't open.
         /// </summary>
         public static IntPtr? Pointer => Process.GetProcessesByName(WindowProcess).FirstOrDefault()?.MainWindowHandle;
+
+        /// <summary>
+        /// Is the launcher open?
+        /// </summary>
+        public static bool IsOpen => Process.GetProcessesByName(WindowProcess).Any();
+
+        /// <summary>
+        /// Is the launcher on the foreground?
+        /// </summary>
+        public static bool IsForeground => IsOpen && GetForegroundWindow() == Pointer;
     }
 }
