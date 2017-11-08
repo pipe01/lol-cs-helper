@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +51,20 @@ namespace Helper.Launcher_Window
             /// Height from 0.0 to 1.0.
             /// </summary>
             public double RelativeHeight { get; private set; }
+
+            /// <summary>
+            /// Get an equivalent absolute rectangle for the specified width and height
+            /// </summary>
+            /// <param name="width">New absolute width</param>
+            /// <param name="height">New absolute height</param>
+            public Rectangle GetAbsoluteRect(int width, int height)
+            {
+                return new Rectangle(
+                    (int)(RelativeX * width),
+                    (int)(RelativeY * height),
+                    (int)(RelativeWidth * width),
+                    (int)(RelativeHeight * height));
+            }
 
             /// <summary>
             /// Create <see cref="WindowRegion"/> from absolute measurements.

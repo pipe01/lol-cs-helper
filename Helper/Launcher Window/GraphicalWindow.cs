@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastBitmapLib;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -51,10 +52,21 @@ namespace Helper.Launcher_Window
         /// <param name="region">Window to crop.</param>
         public Bitmap GetRegionBitmap(VirtualWindow.WindowRegion region)
         {
+            //If the region doesn't belong to this window, abort
             if (!_VirtualWindow.Regions.Contains(region))
                 return null;
 
+            //Get the window picture
+            Bitmap window = GetWindowBitmap();
 
+            //If the picture is null, abort
+            if (window == null)
+                return null;
+
+            using (var fastBmp = window.FastLock())
+            {
+                
+            }
         }
     }
 }
