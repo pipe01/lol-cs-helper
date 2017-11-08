@@ -26,7 +26,7 @@ namespace Helper
         /// Construct a new <see cref="GraphicalWindow"/>.
         /// </summary>
         /// <param name="virtualWindow">Virtual window that we are going to work with.</param>
-        public GraphicalWindow(VirtualWindow virtualWindow)
+        internal GraphicalWindow(VirtualWindow virtualWindow)
         {
             _VirtualWindow = virtualWindow;
         }
