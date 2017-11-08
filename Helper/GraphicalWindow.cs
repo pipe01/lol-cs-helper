@@ -11,7 +11,7 @@ namespace Helper
     /// <summary>
     /// Represents the graphics of the window.
     /// </summary>
-    internal class GraphicalWindow
+    public class GraphicalWindow
     {
         private VirtualWindow _VirtualWindow;
         private Bitmap _WindowBitmap = new Bitmap(1, 1);

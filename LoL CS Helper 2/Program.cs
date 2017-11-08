@@ -10,12 +10,8 @@ namespace LoL_CS_Helper_2
     {
         static void Main(string[] args)
         {
-            while (Console.ReadKey().Key != ConsoleKey.Escape)
-            {
-                ConsoleHelper.Hide();
-                System.Threading.Thread.Sleep(1000);
-                ConsoleHelper.Show();
-            }
+            Console.WriteLine("Start");
+            
         }
     }
 }

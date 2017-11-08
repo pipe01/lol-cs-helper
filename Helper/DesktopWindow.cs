@@ -12,7 +12,7 @@ namespace Helper
     /// <summary>
     /// Represents the physical window.
     /// </summary>
-    internal static class DesktopWindow
+    public static class DesktopWindow
     {
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

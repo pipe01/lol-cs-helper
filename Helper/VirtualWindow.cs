@@ -11,7 +11,7 @@ namespace Helper
     /// <summary>
     /// Represents the structure of the window.
     /// </summary>
-    internal class VirtualWindow
+    public class VirtualWindow
     {
         /// <summary>
         /// Represents a region in the window. All measurements are on a unit scale.
