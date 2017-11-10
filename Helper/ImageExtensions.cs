@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FastBitmapLib;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -51,6 +52,38 @@ namespace Helper
                 }
 
                 return destImage;
+            }
+        }
+
+        /// <summary>
+        /// Gets the average color for an area of the target image
+        /// </summary>
+        /// <param name="area">Area rectangle</param>
+        public static Color GetAverageColorForArea(this Bitmap Target, Rectangle area)
+        {
+            lock (Target)
+            {
+                int allR = 0, allG = 0, allB = 0;
+                int count = 0;
+
+                using (var ub = Target.FastLock())
+                {
+                    for (int x = area.X; x < area.Width + area.X; x++)
+                    {
+                        for (int y = area.Y; y < area.Height + area.Y; y++)
+                        {
+                            var data = ub.GetPixel(x, y);
+
+                            allR += data.R;
+                            allG += data.G;
+                            allB += data.B;
+
+                            count++;
+                        }
+                    }
+                }
+                
+                return Color.FromArgb(allR / count, allG / count, allB / count);
             }
         }
     }
