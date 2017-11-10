@@ -19,6 +19,7 @@ namespace Helper
             this.RelativeY = rely;
             this.RelativeWidth = relw;
             this.RelativeHeight = relh;
+            this.RegionData = null;
         }
 
         /// <summary>

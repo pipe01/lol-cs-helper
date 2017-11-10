@@ -17,6 +17,12 @@ namespace Helper
             Window.AddChampionRegions();
         }
 
+        ~Analyser()
+        {
+            Window.Regions.Clear();
+            Window = null;
+        }
+        
         public async Task<string> GetChampion(Bitmap bmp)
         {
             int comparisonSize = 10;
