@@ -93,5 +93,10 @@ namespace Helper
 
             return regionBitmap;
         }
+
+        public bool IsOnChampSelect()
+        {
+
+        }
     }
 }
