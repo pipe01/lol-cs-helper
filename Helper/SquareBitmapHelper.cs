@@ -10,6 +10,10 @@ namespace Helper
 {
     public static class SquareBitmapHelper
     {
+        /// <summary>
+        /// Checks if the specified bitmap belongs to an empty champion.
+        /// </summary>
+        /// <param name="bmp">The bitmap to check.</param>
         public static bool IsEmptyChampion(Bitmap bmp)
         {
             int areaSize = 5;
