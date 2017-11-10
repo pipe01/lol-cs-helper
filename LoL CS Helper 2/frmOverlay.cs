@@ -68,6 +68,10 @@ namespace LoL_CS_Helper_2
 
         private void _WindowSyncTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            Analyser.Window.GraphicsWindow.RefreshWindowPicture();
+
+            bool champSelect = Analyser.Window.GraphicsWindow.IsOnChampSelect();
+
             try
             {
                 this.Invoke((MethodInvoker)(() =>
@@ -75,16 +79,14 @@ namespace LoL_CS_Helper_2
                     this.Location = DesktopWindow.Bounds.Location;
                     this.Size = DesktopWindow.Bounds.Size;
                     this.Refresh();
+
+                    if (champSelect && _CurrentLayout != "ChampSelect")
+                        SetLayout("ChampSelect");
+                    else if (!champSelect && _CurrentLayout == "ChampSelect")
+                        SetLayout("Main");
                 }));
             }
-            catch (InvalidOperationException)
-            {
-
-            }
-
-            Analyser.Window.GraphicsWindow.RefreshWindowPicture();
-            bool champSelect = Analyser.Window.GraphicsWindow.IsOnChampSelect();
-            Console.WriteLine(champSelect);
+            catch (InvalidOperationException) { }
         }
 
         private void frmOverlay_KeyDown(object sender, KeyEventArgs e)
