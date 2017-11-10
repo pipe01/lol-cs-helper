@@ -86,5 +86,65 @@ namespace Helper
                 return Color.FromArgb(allR / count, allG / count, allB / count);
             }
         }
+
+        /// <summary>
+        /// Convert image to two-dimensional array containg the raw pixels
+        /// </summary>
+        public static Color[,] GetColorArray(this Bitmap bmp)
+        {
+            Color[,] ret = new Color[bmp.Width, bmp.Height];
+            using (var fastBmp = bmp.FastLock())
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    for (int y = 0; y < bmp.Height; y++)
+                    {
+                        ret[x, y] = fastBmp.GetPixel(x, y);
+                    }
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Compare two bitmaps and return the difference percetange. 0% means they are the same, 100%
+        /// means they are completely different.
+        /// </summary>
+        /// <param name="Target">First bitmap in the form of two-dimensional pixel array.</param>
+        /// <param name="to">Seconds bitmap</param>
+        /// <returns></returns>
+        public static float Compare(this Color[,] Target, Bitmap to)
+        {
+            Size size;
+            Color[,] CA, CB;
+
+            lock (Target)
+            {
+                lock (to)
+                {
+                    //if (Target.Size != to.Size)
+                    //    throw new ArgumentException("The images' sizes must match.", nameof(to));
+
+                    size = to.Size;
+
+                    CA = Target;
+                    CB = GetColorArray(to);
+                }
+            }
+
+            float diff = 0;
+
+            for (int y = 0; y < size.Height; y++)
+            {
+                for (int x = 0; x < size.Width; x++)
+                {
+                    diff += (float)Math.Abs(CA[x, y].R - CB[x, y].R) / 255;
+                    diff += (float)Math.Abs(CA[x, y].G - CB[x, y].G) / 255;
+                    diff += (float)Math.Abs(CA[x, y].B - CB[x, y].B) / 255;
+                }
+            }
+
+            return 100 * diff / (size.Width * size.Height * 3);
+        }
     }
 }

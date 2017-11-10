@@ -16,7 +16,7 @@ namespace LoL_CS_Helper_2
         
         static void Main(string[] args)
         {
-            anal.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
+            Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
 
             Loop();
         }
@@ -25,7 +25,7 @@ namespace LoL_CS_Helper_2
         {
             Console.WriteLine("Start");
 
-            GraphicalWindow gWindow = anal.Window.GraphicsWindow;
+            GraphicalWindow gWindow = Analyser.Window.GraphicsWindow;
             
             string[] finalChampions = new string[10];
 
@@ -56,7 +56,7 @@ namespace LoL_CS_Helper_2
                 var picking = item.Item1;
                 var notPicking = item.Item2;
 
-
+                
                 //Get both of the bitmaps
                 Bitmap pBmp = gWindow.GetRegionBitmap(picking);
                 Bitmap npBmp = gWindow.GetRegionBitmap(notPicking);
