@@ -23,9 +23,19 @@ namespace Helper
                 areaSize,
                 areaSize);
 
-            Color avgCenter = bmp.GetAverageColorForArea(centerRect);
-            
-            return KindaEquals(avgCenter, Color.FromArgb(30, 40, 40), 5);
+            Rectangle rightRect = new Rectangle(
+                bmp.Width - areaSize,
+                bmp.Height / 2 - areaSize / 2,
+                areaSize,
+                areaSize);
+
+            //We check if either the center of the image or the middle-right 5x5 areas match the empty color
+
+            return CheckRect(centerRect) || CheckRect(rightRect);
+
+            //Check if the average color for a rectangle matches the empty color
+            bool CheckRect(Rectangle rect)
+                => KindaEquals(bmp.GetAverageColorForArea(rect), Color.FromArgb(30, 40, 40), 5);
         }
 
         /// <summary>
