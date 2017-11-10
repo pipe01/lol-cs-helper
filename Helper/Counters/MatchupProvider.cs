@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +30,7 @@ namespace Helper.Counters
             }
         }
 
-        private List<Matchup> _Cache = new List<Matchup>();
+        private List<Matchup> _Cache = null;
 
 
         public abstract string GetProviderName();
@@ -41,15 +43,50 @@ namespace Helper.Counters
         
         public IEnumerable<Matchup> GetMatchupsForChampion(string champion)
         {
+            if (_Cache == null)
+                LoadCache();
+
             var cache = _Cache.Where(o => o.Champion == champion);
 
             if (!cache.Any())
             {
                 cache = GetMatchupsInner(champion);
                 _Cache.AddRange(cache);
+
+                SaveCache();
             }
 
             return cache;
+        }
+
+        private void LoadCache()
+        {
+            string provider = this.GetType().Name;
+            string filePath = Path.Combine("data", "dataCache", provider + ".json");
+
+            if (!File.Exists(filePath))
+            {
+                _Cache = new List<Matchup>();
+                SaveCache();
+                return;
+            }
+
+            _Cache = JsonConvert.DeserializeObject<List<Matchup>>(File.ReadAllText(filePath));
+        }
+
+        private void SaveCache()
+        {
+            if (_Cache == null)
+                return;
+
+            string provider = this.GetType().Name;
+            string filePath = Path.GetFullPath(Path.Combine("data", "dataCache", provider + ".json"));
+            string directory = Path.GetDirectoryName(filePath);
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(filePath, JsonConvert.SerializeObject(_Cache));
         }
     }
 }
