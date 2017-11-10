@@ -23,7 +23,7 @@ namespace Helper
 
             var images = await Riot.GetChampionImagesAsync(comparisonSize);
 
-            Bitmap resizedTarget = bmp.ResizeBitmap(comparisonSize, comparisonSize);
+            Bitmap resizedTarget = bmp.Resize(comparisonSize, comparisonSize);
             Color[,] arrayTarget = GetColorArray(resizedTarget);
             List<Tuple<string, float>> champions = new List<Tuple<string, float>>();
             
@@ -38,7 +38,7 @@ namespace Helper
 
             var lowest = champions.First();
 
-            Console.WriteLine("Lowest: " + lowest.Item2);
+            //Console.WriteLine("Lowest: " + lowest.Item2);
 
             if (lowest.Item2 > 15)
                 return "";

@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analyser.cs" />
+    <Compile Include="ImageExtensions.cs" />
     <Compile Include="Riot.cs" />
     <Compile Include="SquareBitmapHelper.cs" />
     <Compile Include="Window\WindowCapture.cs" />
