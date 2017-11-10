@@ -109,7 +109,7 @@ namespace Helper
         {
             string cacheName = "ChampionSquares" + (squareSize > 0 ? squareSize.ToString() : "");
 
-            return await TryGetCache(cacheName, async () =>
+            return (await TryGetCache(cacheName, async () =>
             {
                 Dictionary<string, Image> ret = new Dictionary<string, Image>();
 
@@ -150,7 +150,7 @@ namespace Helper
                 }
 
                 return ret;
-            });
+            })).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Helper
         /// <param name="image">The image to resize.</param>
         /// <param name="width">The width to resize to.</param>
         /// <param name="height">The height to resize to.</param>
-        private static Bitmap ResizeBitmap(Bitmap Target, int width, int height)
+        public static Bitmap ResizeBitmap(this Bitmap Target, int width, int height)
         {
             lock (Target)
             {

@@ -19,18 +19,34 @@ namespace LoL_CS_Helper_2
             GraphicalWindow gWindow = anal.Window.GraphicsWindow;
             gWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
 
-            foreach (var item in anal.Window.Regions)//.Where(o => (o.RegionData as ChampionWindowRegionData).Team == ChampionTeam.Enemy))
+            string[] finalChampions = new string[10];
+
+            int i = 0;
+            foreach (var item in anal.Window.Regions.Where(o => !(o.RegionData as ChampionWindowRegionData).IsChoosing))
             {
                 var bmp = gWindow.GetRegionBitmap(item);
                 bmp.Save(item.Name + ".png");
 
-                var champ = SquareBitmapHelper.IsChampion(bmp);
+                var champ = anal.GetChampion(bmp).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                if (champ == "")
+                    champ = "None";
+
+                if (SquareBitmapHelper.IsEmptyChampion(bmp))
+                    Console.WriteLine("{0}\tEmpty", item.Name);
+                else
+                    Console.WriteLine("{0}\t\t{1}", item.Name, champ);
+                
+                /*var champ = SquareBitmapHelper.IsChampion(bmp);
                 if (champ)
-                    Console.WriteLine("{0}: {1}", item.Name, champ);
+                    Console.WriteLine("{0}: {1}", item.Name, champ);*/
             }
 
             Console.WriteLine("Done");
             Console.ReadLine();
+
+            Console.Clear();
+            Main(args);
         }
     }
 }
