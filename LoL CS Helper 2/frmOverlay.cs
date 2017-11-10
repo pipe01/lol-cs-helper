@@ -56,7 +56,10 @@ namespace LoL_CS_Helper_2
                 string item = champions[i];
 
                 if (item == "Empty" || item == "None")
+                {
+                    _Counters[i] = new string[0];
                     continue;
+                }
 
                 var counters = await _MatchupProvider.GetMatchupsForChampionAsync(item);
 
@@ -106,7 +109,6 @@ namespace LoL_CS_Helper_2
 
         private void _WindowSyncTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
             if (DesktopWindow.IsForeground)
                 Analyser.Window.GraphicsWindow.RefreshWindowPicture();
                 //Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
@@ -174,11 +176,8 @@ namespace LoL_CS_Helper_2
                 {
                     int index = int.Parse(item.Name.Last().ToString());
 
-                    if (_Counters[index] != null)
-                    {
-                        Bitmap image = await BuildCountersImage(_Counters[index], abs.Height);
-                        e.Graphics.DrawImage(image, abs.Location);
-                    }
+                    Bitmap image = await BuildCountersImage(_Counters[index], abs.Height);
+                    e.Graphics.DrawImage(image, abs.Location);
                 }
             }
 
@@ -187,10 +186,30 @@ namespace LoL_CS_Helper_2
 
         private async Task<Bitmap> BuildCountersImage(string[] counters, int height)
         {
-            int maxCounters = Math.Min(counters.Length, 3);
+
+            int maxCounters = 3;
+            maxCounters = counters == null ? maxCounters : Math.Min(counters.Length, maxCounters);
+
+            if (counters != null && counters.Length == 0)
+                return new Bitmap(1, 1);
 
             Bitmap ret = new Bitmap(height * maxCounters, height);
             Graphics g = Graphics.FromImage(ret);
+            
+            if (counters == null)
+            {
+                g.DrawString(
+                    "Loading...",
+                    new Font("Arial", 12),
+                    Brushes.LightYellow,
+                    new RectangleF(0, 0, ret.Width, ret.Height),
+                    new StringFormat
+                    {
+                        Alignment = StringAlignment.Far,
+                        LineAlignment = StringAlignment.Center
+                    });
+                return ret;
+            }
 
             counters = counters
                 .Select(o => o
