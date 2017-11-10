@@ -1,8 +1,10 @@
 ﻿using Helper;
+using Helper.Counters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,9 +18,11 @@ namespace LoL_CS_Helper_2
     {
         private Timer _WindowSyncTimer, _RefreshTimer;
         private Configuration _Config;
-        private bool _Focused = false;
+        private bool _Focused, _Refreshing;
         private Dictionary<string, Layout> _Layouts = new Dictionary<string, Layout>();
         private string _CurrentLayout = "Main";
+        private string[][] _Counters = new string[5][];
+        private MatchupProvider _MatchupProvider = new ProviderLolCounter();
 
         public frmOverlay(Configuration config)
         {
@@ -32,8 +36,37 @@ namespace LoL_CS_Helper_2
             
             _RefreshTimer = new Timer();
             _RefreshTimer.Interval = _Config.MinimumRefreshInterval;
+            _RefreshTimer.Elapsed += _RefreshTimer_Elapsed;
 
             AddRegions();
+        }
+
+        private async void _RefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (!DesktopWindow.IsForeground || _Refreshing)
+                return;
+
+            _Refreshing = true;
+
+            var champions = await Analyser.GetAllChampions();
+            champions = champions.Skip(5).ToArray();
+
+            for (int i = 0; i < champions.Length; i++)
+            {
+                string item = champions[i];
+
+                if (item == "Empty" || item == "None")
+                    continue;
+
+                var counters = await _MatchupProvider.GetMatchupsForChampionAsync(item);
+
+                _Counters[i] = counters
+                    .Where(o => o.Type == MatchupProvider.Matchup.MatchupType.WeakAgainst)
+                    .Select(o => o.Against)
+                    .ToArray();
+            }
+
+            _Refreshing = false;
         }
 
         private void AddRegions()
@@ -57,18 +90,26 @@ namespace LoL_CS_Helper_2
 
             _Layouts.Add("Main", layout);
 
-            SetLayout("ChampSelect");
+            SetLayout("Main");
         }
 
         private void SetLayout(string name)
         {
             _CurrentLayout = name;
             this.Refresh();
+
+            if (_CurrentLayout == "ChampSelect")
+                _RefreshTimer.Start();
+            else
+                _RefreshTimer.Stop();
         }
 
         private void _WindowSyncTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Analyser.Window.GraphicsWindow.RefreshWindowPicture();
+
+            if (DesktopWindow.IsForeground)
+                Analyser.Window.GraphicsWindow.RefreshWindowPicture();
+                //Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
 
             bool champSelect = Analyser.Window.GraphicsWindow.IsOnChampSelect();
 
@@ -80,24 +121,17 @@ namespace LoL_CS_Helper_2
                     this.Size = DesktopWindow.Bounds.Size;
                     this.Refresh();
 
-                    if (champSelect && _CurrentLayout != "ChampSelect")
-                        SetLayout("ChampSelect");
-                    else if (!champSelect && _CurrentLayout == "ChampSelect")
-                        SetLayout("Main");
+                    if (DesktopWindow.IsForeground)
+                        if (champSelect && _CurrentLayout != "ChampSelect")
+                            SetLayout("ChampSelect");
+                        else if (!champSelect && _CurrentLayout == "ChampSelect")
+                            SetLayout("Main");
                 }));
             }
             catch (InvalidOperationException) { }
         }
 
-        private void frmOverlay_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                this.Close();
-            }
-        }
-
-        private void frmOverlay_Paint(object sender, PaintEventArgs e)
+        private async void frmOverlay_Paint(object sender, PaintEventArgs e)
         {
             if (!DesktopWindow.IsForeground && !_Focused)
             {
@@ -135,9 +169,51 @@ namespace LoL_CS_Helper_2
 
                     font.Dispose();
                 }
+
+                if (item.Name.StartsWith("counter"))
+                {
+                    int index = int.Parse(item.Name.Last().ToString());
+
+                    if (_Counters[index] != null)
+                    {
+                        Bitmap image = await BuildCountersImage(_Counters[index], abs.Height);
+                        e.Graphics.DrawImage(image, abs.Location);
+                    }
+                }
             }
 
             pen.Dispose();
+        }
+
+        private async Task<Bitmap> BuildCountersImage(string[] counters, int height)
+        {
+            int maxCounters = Math.Min(counters.Length, 3);
+
+            Bitmap ret = new Bitmap(height * maxCounters, height);
+            Graphics g = Graphics.FromImage(ret);
+
+            counters = counters
+                .Select(o => o
+                    .Replace("Rek'sai", "RekSai")
+                    .Replace("LeBlanc", "Leblanc")
+                    .Replace("Kog'Maw", "KogMaw")
+                    .Replace("Wukong", "MonkeyKing"))
+                .Take(maxCounters)
+                .Reverse()
+                .ToArray();
+
+            //Get the counters' images
+            Dictionary<string, Image> counterImages = (await Riot.GetChampionImagesAsync(height))
+                .Where(o => counters.Any(a => a.Equals(o.Key)))
+                .ToDictionary(o => o.Key, o => o.Value);
+
+            for (int i = 0; i < maxCounters; i++)
+            {
+                Image counter = counterImages[counters[i]];
+                g.DrawImage(counter, new Rectangle(i * height, 0, height, height));
+            }
+
+            return ret;
         }
 
         private void frmOverlay_MouseDown(object sender, MouseEventArgs e)

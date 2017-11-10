@@ -46,7 +46,6 @@
             this.TransparencyKey = System.Drawing.Color.Magenta;
             this.Load += new System.EventHandler(this.frmOverlay_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.frmOverlay_Paint);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmOverlay_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmOverlay_MouseDown);
             this.ResumeLayout(false);
 
