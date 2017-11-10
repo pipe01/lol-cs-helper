@@ -28,6 +28,13 @@ namespace Helper
             return KindaEquals(avgCenter, Color.FromArgb(30, 40, 40), 5);
         }
 
+        /// <summary>
+        /// Checks if two colors are the same, with a tolerance
+        /// </summary>
+        /// <param name="a">First color.</param>
+        /// <param name="b">Second color.</param>
+        /// <param name="threshold">Maximum difference between two color components.</param>
+        /// <returns></returns>
         private static bool KindaEquals(Color a, Color b, int threshold = 5)
         {
             return
