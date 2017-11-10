@@ -12,13 +12,16 @@ namespace Helper
     {
         public static bool IsEmptyChampion(Bitmap bmp)
         {
-            using (var fastBmp = bmp.FastLock())
-            {
-                var points = GetRandomPoints(fastBmp, 20);
-                int correct = points.Count(o => KindaEquals(o, Color.FromArgb(28, 37, 41)));
+            int areaSize = 5;
+            Rectangle centerRect = new Rectangle(
+                bmp.Width / 2 - areaSize / 2,
+                bmp.Height / 2 - areaSize / 2,
+                areaSize,
+                areaSize);
 
-                return correct > 5;
-            }
+            Color avgCenter = bmp.GetAverageColorForArea(centerRect);
+            
+            return KindaEquals(avgCenter, Color.FromArgb(30, 40, 40), 5);
         }
 
         private static bool KindaEquals(Color a, Color b, int threshold = 5)

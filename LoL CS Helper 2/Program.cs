@@ -1,6 +1,7 @@
 ﻿using Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ namespace LoL_CS_Helper_2
             gWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
 
             string[] finalChampions = new string[10];
+
+            Stopwatch sw = Stopwatch.StartNew();
 
             int i = 0;
             foreach (var item in anal.Window.Regions.Where(o => !(o.RegionData as ChampionWindowRegionData).IsChoosing))
@@ -42,7 +45,9 @@ namespace LoL_CS_Helper_2
                     Console.WriteLine("{0}: {1}", item.Name, champ);*/
             }
 
-            Console.WriteLine("Done");
+            sw.Stop();
+
+            Console.WriteLine("Done in {0:0} ms", sw.ElapsedMilliseconds);
             Console.ReadLine();
 
             Console.Clear();
