@@ -31,18 +31,5 @@ namespace Helper
                 (Math.Abs(a.G - b.G) <= threshold) &&
                 (Math.Abs(a.B - b.B) <= threshold);
         }
-
-        private static Color[] GetRandomPoints(FastBitmap bmp, int points)
-        {
-            Random rnd = new Random();
-            Color[] ret = new Color[points];
-
-            for (int i = 0; i < points; i++)
-            {
-                ret[i] = bmp.GetPixel(rnd.Next(0, bmp.Width), rnd.Next(0, bmp.Height));
-            }
-
-            return ret;
-        }
     }
 }
