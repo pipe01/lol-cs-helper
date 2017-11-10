@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Helper
 {
-    public class Analyser
+    public static class Analyser
     {
         private static bool Initialised = false;
         public static VirtualWindow Window { get; private set; } = new VirtualWindow();
 
-        public Analyser()
+        static Analyser()
         {
             if (!Initialised)
                 Window.AddChampionRegions();
         }
         
-        public async Task<string> GetChampion(Bitmap bmp)
+        public static async Task<string> GetChampion(Bitmap bmp)
         {
             int comparisonSize = 10;
 
@@ -39,9 +39,7 @@ namespace Helper
             champions.Sort((a, b) => a.Item2.CompareTo(b.Item2));
 
             var lowest = champions.First();
-
-            //Console.WriteLine("Lowest: " + lowest.Item2);
-
+            
             if (lowest.Item2 > 15)
                 return "";
 

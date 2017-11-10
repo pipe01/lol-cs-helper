@@ -11,9 +11,6 @@ namespace LoL_CS_Helper_2
 {
     class Program
     {
-        static Analyser anal = new Analyser();
-
-        
         static void Main(string[] args)
         {
             Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
@@ -69,13 +66,13 @@ namespace LoL_CS_Helper_2
                 if (SquareBitmapHelper.IsEmptyChampion(pBmp))
                     pChamp = "Empty";
                 else //If it isn't, try to get the champion
-                    pChamp = anal.GetChampion(pBmp).ConfigureAwait(false).GetAwaiter().GetResult();
+                    pChamp = Analyser.GetChampion(pBmp).ConfigureAwait(false).GetAwaiter().GetResult();
 
                 //If the locked champion bitmap isn't empty, the user has already picked a champion
                 if (SquareBitmapHelper.IsEmptyChampion(npBmp))
                     npChamp = "Empty";
                 else
-                    npChamp = anal.GetChampion(npBmp).ConfigureAwait(false).GetAwaiter().GetResult();
+                    npChamp = Analyser.GetChampion(npBmp).ConfigureAwait(false).GetAwaiter().GetResult();
                 
 
                 //TODO: Maybe switch the order of the following statements
