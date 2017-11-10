@@ -94,9 +94,15 @@ namespace Helper
             return regionBitmap;
         }
 
+        /// <summary>
+        /// Returns whether the user is in champion select
+        /// </summary>
         public bool IsOnChampSelect()
         {
+            var bmp = GetRegionBitmap(_VirtualWindow.Regions["ChampSelectTrigger"]);
+            var avg = bmp.GetAverageColorForArea(new Rectangle(0, 0, bmp.Width, bmp.Height));
 
+            return !(avg.Equals(Color.FromArgb(1, 10, 19)) || avg.Equals(Color.FromArgb(0, 2, 4)));
         }
     }
 }

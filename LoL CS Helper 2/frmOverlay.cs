@@ -17,6 +17,8 @@ namespace LoL_CS_Helper_2
         private Timer _WindowSyncTimer, _RefreshTimer;
         private Configuration _Config;
         private bool _Focused = false;
+        private Dictionary<string, Layout> _Layouts = new Dictionary<string, Layout>();
+        private string _CurrentLayout = "Main";
 
         public frmOverlay(Configuration config)
         {
@@ -30,6 +32,38 @@ namespace LoL_CS_Helper_2
             
             _RefreshTimer = new Timer();
             _RefreshTimer.Interval = _Config.MinimumRefreshInterval;
+
+            AddRegions();
+        }
+
+        private void AddRegions()
+        {
+            int startY = 141;
+
+            var layout = new Layout();
+
+            for (int i = 0; i < 5; i++)
+            {
+                int y = startY + (i * 80);
+                layout.AddRegion("counters" + i, 1047, y, 150, 30);
+            }
+
+            _Layouts.Add("ChampSelect", layout);
+
+
+            layout = new Layout();
+
+            layout.AddRegion("watermark", 1143, 705, 71, 9);
+
+            _Layouts.Add("Main", layout);
+
+            SetLayout("ChampSelect");
+        }
+
+        private void SetLayout(string name)
+        {
+            _CurrentLayout = name;
+            this.Refresh();
         }
 
         private void _WindowSyncTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -47,6 +81,10 @@ namespace LoL_CS_Helper_2
             {
 
             }
+
+            Analyser.Window.GraphicsWindow.RefreshWindowPicture();
+            bool champSelect = Analyser.Window.GraphicsWindow.IsOnChampSelect();
+            Console.WriteLine(champSelect);
         }
 
         private void frmOverlay_KeyDown(object sender, KeyEventArgs e)
@@ -68,7 +106,36 @@ namespace LoL_CS_Helper_2
             if (_Focused)
                 _Focused = false;
 
-            e.Graphics.DrawRectangle(new Pen(Color.Orange, 3), new Rectangle(Point.Empty, this.Size));
+
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+
+            var pen = new Pen(Color.Orange, 3);
+
+            if (_Config.DebugDraw)
+                e.Graphics.DrawRectangle(pen, new Rectangle(Point.Empty, this.Size));
+
+            foreach (var item in _Layouts[_CurrentLayout])
+            {
+                var abs = item.GetAbsoluteBounds(this.Width, this.Height);
+
+                if (_Config.DebugDraw)
+                {
+                    e.Graphics.DrawRectangle(pen, abs);
+                    e.Graphics.DrawString(_CurrentLayout, new Font("Arial", 12), Brushes.Yellow, PointF.Empty);
+                }
+
+                if (item.Name == "watermark")
+                {
+                    Font font = new Font("Courier New", abs.Height + 3, GraphicsUnit.Pixel);
+                    Color clr = Color.DarkOrange;
+
+                    e.Graphics.DrawString("Pipe's helper", font, new SolidBrush(clr), abs.Location);
+
+                    font.Dispose();
+                }
+            }
+
+            pen.Dispose();
         }
 
         private void frmOverlay_MouseDown(object sender, MouseEventArgs e)
@@ -80,6 +147,8 @@ namespace LoL_CS_Helper_2
         private void frmOverlay_Load(object sender, EventArgs e)
         {
             _WindowSyncTimer.Start();
+
+            DesktopWindow.BringToForeground();
         }
     }
 }

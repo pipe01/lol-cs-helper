@@ -122,6 +122,7 @@ namespace Helper
                 AddChampionRegion(true, true, i, "EnemyChoosing" + i, 1164, y, squareSize, squareSize);
             }
 
+            Regions.Add(WindowRegion.FromAbsolute("ChampSelectTrigger", 1142, 690, 26, 26, 1280, 720));
 
             void AddChampionRegion(bool enemy, bool choosing, int index, string name, int x, int y, int w, int h,
                 int launcherW = 1280, int launcherH = 720)

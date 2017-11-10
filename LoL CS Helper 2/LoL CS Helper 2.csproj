@@ -55,6 +55,7 @@
     <Compile Include="frmOverlay.Designer.cs">
       <DependentUpon>frmOverlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Layout.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

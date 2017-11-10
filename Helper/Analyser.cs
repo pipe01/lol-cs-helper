@@ -63,6 +63,9 @@ namespace Helper
             WindowRegion pairFirst = null;
             foreach (var item in Window.Regions)
             {
+                if (!(item.RegionData is ChampionWindowRegionData))
+                    continue;
+
                 var data = item.RegionData as ChampionWindowRegionData;
 
                 if (!data.IsChoosing)
