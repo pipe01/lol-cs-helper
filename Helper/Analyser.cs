@@ -10,17 +10,13 @@ namespace Helper
 {
     public class Analyser
     {
-        public VirtualWindow Window { get; private set; } = new VirtualWindow();
+        private static bool Initialised = false;
+        public static VirtualWindow Window { get; private set; } = new VirtualWindow();
 
         public Analyser()
         {
-            Window.AddChampionRegions();
-        }
-
-        ~Analyser()
-        {
-            Window.Regions.Clear();
-            Window = null;
+            if (!Initialised)
+                Window.AddChampionRegions();
         }
         
         public async Task<string> GetChampion(Bitmap bmp)

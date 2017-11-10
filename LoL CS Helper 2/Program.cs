@@ -31,10 +31,11 @@ namespace LoL_CS_Helper_2
 
             Stopwatch sw = Stopwatch.StartNew();
 
+            //Join the picking and not-picking champion regions together in a tuple list
             List<Tuple<WindowRegion, WindowRegion>> regionTuples = new List<Tuple<WindowRegion, WindowRegion>>();
 
             WindowRegion pairFirst = null;
-            foreach (var item in anal.Window.Regions)
+            foreach (var item in Analyser.Window.Regions)
             {
                 var data = item.RegionData as ChampionWindowRegionData;
 
@@ -100,20 +101,7 @@ namespace LoL_CS_Helper_2
 
                 Console.WriteLine("{0}\t{1}", goodRegion.Name, champion);
             }
-
-            /*                var bmp = gWindow.GetRegionBitmap(item);
-                bmp.Save(item.Name + ".png");
-
-                var champ = anal.GetChampion(bmp).ConfigureAwait(false).GetAwaiter().GetResult();
-
-                if (champ == "")
-                    champ = "None";
-
-                if (SquareBitmapHelper.IsEmptyChampion(bmp))
-                    Console.WriteLine("{0}\tEmpty", item.Name);
-                else
-                    Console.WriteLine("{0}\t{1}", item.Name, champ);*/
-
+            
             sw.Stop();
             
             Console.WriteLine("Done in {0:0} ms", sw.ElapsedMilliseconds);
