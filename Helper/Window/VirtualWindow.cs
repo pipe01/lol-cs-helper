@@ -95,7 +95,7 @@ namespace Helper
         public GraphicalWindow GraphicsWindow => _GWindow ?? (_GWindow = new GraphicalWindow(this));
 
         /// <summary>
-        /// Add default champion regions.
+        /// Add default champion regions. If P = picking and N = not picking, the order is NPNPNP...
         /// </summary>
         public void AddChampionRegions()
         {
