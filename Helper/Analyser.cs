@@ -19,7 +19,7 @@ namespace Helper
 
         public async Task<string> GetChampion(Bitmap bmp)
         {
-            int comparisonSize = 15;
+            int comparisonSize = 10;
 
             var images = await Riot.GetChampionImagesAsync(comparisonSize);
 
