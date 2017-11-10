@@ -16,6 +16,8 @@ namespace LoL_CS_Helper_2
         {
             Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
 
+            new frmOverlay(Configuration.LoadFromFile("config.json")).ShowDialog();
+
             Loop();
         }
 

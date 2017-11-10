@@ -26,7 +26,11 @@ namespace LoL_CS_Helper_2
         public static Configuration LoadFromFile(string path)
         {
             if (!File.Exists(path))
-                return null;
+            {
+                var ret = new Configuration();
+                ret.SaveToFile(path);
+                return ret;
+            }
 
             return JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(path));
         }

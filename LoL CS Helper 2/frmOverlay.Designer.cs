@@ -34,7 +34,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Magenta;
             this.ClientSize = new System.Drawing.Size(830, 491);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmOverlay";
             this.ShowIcon = false;
@@ -43,6 +45,9 @@
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Magenta;
             this.Load += new System.EventHandler(this.frmOverlay_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.frmOverlay_Paint);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmOverlay_KeyDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmOverlay_MouseDown);
             this.ResumeLayout(false);
 
         }
