@@ -19,12 +19,12 @@ namespace LoL_CS_Helper_2
 
             Console.WriteLine("Loading...");
 
-            var frm = new frmOverlay(Configuration.LoadFromFile("config.json"));
+            //var frm = new frmOverlay(Configuration.LoadFromFile("config.json"));
 
             ConsoleHelper.Hide();
 
             Application.EnableVisualStyles();
-            Application.Run(frm);
+            //Application.Run(frm);
         }
 
         static void Loop()
