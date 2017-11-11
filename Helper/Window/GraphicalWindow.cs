@@ -81,6 +81,9 @@ namespace Helper
             //Get the region's absolute rectangle for the window
             Rectangle regionRect = region.GetAbsoluteRect(window.Width, window.Height);
 
+            if (regionRect.Width == 0 || regionRect.Height == 0)
+                return null;
+
             //Create region bitmap
             Bitmap regionBitmap = new Bitmap(regionRect.Width, regionRect.Height);
 
@@ -100,6 +103,10 @@ namespace Helper
         public bool IsOnChampSelect()
         {
             var bmp = GetRegionBitmap(_VirtualWindow.Regions["ChampSelectTrigger"]);
+
+            if (bmp == null)
+                return false;
+
             var avg = bmp.GetAverageColorForArea(new Rectangle(0, 0, bmp.Width, bmp.Height));
 
             return !(avg.Equals(Color.FromArgb(1, 10, 19)) || avg.Equals(Color.FromArgb(0, 2, 4)));

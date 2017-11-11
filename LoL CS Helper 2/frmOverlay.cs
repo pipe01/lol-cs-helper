@@ -27,18 +27,22 @@ namespace LoL_CS_Helper_2
         public frmOverlay(Configuration config)
         {
             InitializeComponent();
-
+            
             _Config = config;
 
             _WindowSyncTimer = new Timer();
             _WindowSyncTimer.Interval = _Config.WindowSyncInterval;
-            _WindowSyncTimer.Elapsed += _WindowSyncTimer_Elapsed;
+            _WindowSyncTimer.Elapsed += WindowSync;
             
             _RefreshTimer = new Timer();
             _RefreshTimer.Interval = _Config.MinimumRefreshInterval;
             _RefreshTimer.Elapsed += _RefreshTimer_Elapsed;
 
             AddRegions();
+
+            WindowSync(this, null);
+
+            this.Hide();
         }
 
         private async void _RefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -107,7 +111,7 @@ namespace LoL_CS_Helper_2
                 _RefreshTimer.Stop();
         }
 
-        private void _WindowSyncTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void WindowSync(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (DesktopWindow.IsForeground)
                 Analyser.Window.GraphicsWindow.RefreshWindowPicture();
