@@ -41,7 +41,7 @@ namespace Helper
         /// <summary>
         /// Get the launcher window's handle, or IntPtr.Zero if it isn't open.
         /// </summary>
-        public static IntPtr Pointer =>
+        public static IntPtr Handle =>
             (Process.GetProcessesByName(WindowProcess).FirstOrDefault()?.MainWindowHandle) ?? IntPtr.Zero;
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Helper
         /// <summary>
         /// Is the launcher on the foreground?
         /// </summary>
-        public static bool IsForeground => IsOpen && GetForegroundWindow() == Pointer;
+        public static bool IsForeground => IsOpen && GetForegroundWindow() == Handle;
 
         /// <summary>
         /// Returns the window's bounds, or Rectangle.Empty if it isn't open.
@@ -64,7 +64,7 @@ namespace Helper
                 if (!IsOpen)
                     return Rectangle.Empty;
                 
-                if (GetWindowRect(new HandleRef(new object(), Pointer), out var rect))
+                if (GetWindowRect(new HandleRef(new object(), Handle), out var rect))
                 {
                     Rectangle ret = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
                     return ret;
@@ -79,7 +79,7 @@ namespace Helper
         /// </summary>
         public static bool BringToForeground()
         {
-            IntPtr handle = Pointer;
+            IntPtr handle = Handle;
 
             if (handle == null)
                 return false;

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Timer = System.Timers.Timer;
@@ -18,17 +19,25 @@ namespace LoL_CS_Helper_2
     {
         private Timer _WindowSyncTimer, _RefreshTimer;
         private Configuration _Config;
-        private bool _Focused, _Refreshing;
+        private bool _Focused, _HookRunning, _Foreground;
         private Dictionary<string, Layout> _Layouts = new Dictionary<string, Layout>();
         private string _CurrentLayout = "Main";
         private string[][] _Counters = new string[5][];
         private MatchupProvider _MatchupProvider = new ProviderLolCounter();
+        private GlobalHooks _Hooks;
+        private IntPtr _LauncherHandle = IntPtr.Zero;
+
+        private const int WM_MOVE = 0x0003;
+        private const int WM_SETFOCUS = 0x0007;
+        private const int WM_KILLFOCUS = 0x0008;
+        private const int WM_ACTIVATE = 0x0006;
 
         public frmOverlay(Configuration config)
         {
             InitializeComponent();
             
             _Config = config;
+            _Hooks = new GlobalHooks(this.Handle);
 
             _WindowSyncTimer = new Timer();
             _WindowSyncTimer.Interval = _Config.WindowSyncInterval;
@@ -37,43 +46,92 @@ namespace LoL_CS_Helper_2
             _RefreshTimer = new Timer();
             _RefreshTimer.Interval = _Config.MinimumRefreshInterval;
             _RefreshTimer.Elapsed += _RefreshTimer_Elapsed;
+            _RefreshTimer.AutoReset = false;
+            
+            Application.ApplicationExit += (a, b) => StopHooks();
 
             AddRegions();
 
             WindowSync(this, null);
-
+            
             this.Hide();
         }
 
-        private async void _RefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void StartHooks()
         {
-            if (!DesktopWindow.IsForeground || _Refreshing)
-                return;
+            _HookRunning = true;
 
-            _Refreshing = true;
+            _Hooks.CallWndProc.CallWndProc += CallWndProc_CallWndProc;
+            _Hooks.CallWndProc.Start();
+        }
 
-            var champions = await Analyser.GetAllChampions();
-            champions = champions.Skip(5).ToArray();
+        private void StopHooks()
+        {
+            _HookRunning = false;
+            _Hooks.CallWndProc.Stop();
+        }
 
-            for (int i = 0; i < champions.Length; i++)
-            {
-                string item = champions[i];
+        private void CallWndProc_CallWndProc(IntPtr Handle, IntPtr Message, IntPtr wParam, IntPtr lParam)
+        {
+            int msg = Message.ToInt32();
 
-                if (item == "Empty" || item == "None")
+            if (Handle == _LauncherHandle)
+                switch (msg)
                 {
-                    _Counters[i] = new string[0];
-                    continue;
+                    case WM_MOVE:
+                        IntPtr xy = lParam;
+                        int x = unchecked((short)(long)xy);
+                        int y = unchecked((short)((long)xy >> 16));
+
+                        this.Location = new Point(x, y);
+                        break;
+                    case WM_ACTIVATE:
+                        _Foreground = wParam.ToInt32() == 1;
+                        this.Refresh();
+                        break;
+                }
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            // This lets the GlobalHooks class check the message queue for this window to see if it's received
+            // any hook messages.
+            if (_HookRunning)
+                _Hooks.ProcessWindowMessage(ref m);
+
+            base.WndProc(ref m);
+        }
+
+        private void _RefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            new Thread(async () =>
+            {
+                if (DesktopWindow.IsForeground)
+                {
+                    var champions = await Analyser.GetAllChampions();
+                    champions = champions.Skip(5).ToArray();
+
+                    for (int i = 0; i < champions.Length; i++)
+                    {
+                        string item = champions[i];
+
+                        if (item == "Empty" || item == "None")
+                        {
+                            _Counters[i] = new string[0];
+                            continue;
+                        }
+
+                        var counters = await _MatchupProvider.GetMatchupsForChampionAsync(item);
+
+                        _Counters[i] = counters
+                            .Where(o => o.Type == MatchupProvider.Matchup.MatchupType.WeakAgainst)
+                            .Select(o => o.Against)
+                            .ToArray();
+                    }
                 }
 
-                var counters = await _MatchupProvider.GetMatchupsForChampionAsync(item);
-
-                _Counters[i] = counters
-                    .Where(o => o.Type == MatchupProvider.Matchup.MatchupType.WeakAgainst)
-                    .Select(o => o.Against)
-                    .ToArray();
-            }
-
-            _Refreshing = false;
+                _RefreshTimer.Start();
+            }).Start();
         }
 
         private void AddRegions()
@@ -93,7 +151,7 @@ namespace LoL_CS_Helper_2
 
             layout = new Layout();
 
-            layout.AddRegion("watermark", 1143, 705, 71, 9);
+            layout.AddRegion("watermark", 1143, 705, 75, 12);
 
             _Layouts.Add("Main", layout);
 
@@ -113,9 +171,20 @@ namespace LoL_CS_Helper_2
 
         private void WindowSync(object sender, System.Timers.ElapsedEventArgs e)
         {
+            if (DesktopWindow.IsOpen)
+                _LauncherHandle = DesktopWindow.Handle;
+            else
+                _LauncherHandle = IntPtr.Zero;
+
             if (DesktopWindow.IsForeground)
+            {
+                this.Invoke((MethodInvoker)(() =>
+                {
+                    this.TopMost = false;
+                    this.TopMost = true;
+                }));
                 Analyser.Window.GraphicsWindow.RefreshWindowPicture();
-                //Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
+            }
 
             bool champSelect = Analyser.Window.GraphicsWindow.IsOnChampSelect();
 
@@ -139,7 +208,7 @@ namespace LoL_CS_Helper_2
 
         private async void frmOverlay_Paint(object sender, PaintEventArgs e)
         {
-            if (!DesktopWindow.IsForeground && !_Focused)
+            if (!_Foreground && !_Focused)
             {
                 _Focused = false;
                 return;
@@ -151,7 +220,7 @@ namespace LoL_CS_Helper_2
 
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
 
-            var pen = new Pen(Color.Orange, 3);
+            var pen = new Pen(Color.Orange, 1);
 
             if (_Config.DebugDraw)
                 e.Graphics.DrawRectangle(pen, new Rectangle(Point.Empty, this.Size));
@@ -168,7 +237,7 @@ namespace LoL_CS_Helper_2
 
                 if (item.Name == "watermark")
                 {
-                    Font font = new Font("Courier New", abs.Height + 3, GraphicsUnit.Pixel);
+                    Font font = new Font("Courier New", abs.Height, GraphicsUnit.Pixel);
                     Color clr = Color.DarkOrange;
 
                     e.Graphics.DrawString("Pipe's helper", font, new SolidBrush(clr), abs.Location);
@@ -239,6 +308,11 @@ namespace LoL_CS_Helper_2
             return ret;
         }
 
+        private void frmOverlay_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            StopHooks();
+        }
+
         private void frmOverlay_MouseDown(object sender, MouseEventArgs e)
         {
             _Focused = true;
@@ -248,8 +322,8 @@ namespace LoL_CS_Helper_2
         private void frmOverlay_Load(object sender, EventArgs e)
         {
             _WindowSyncTimer.Start();
-
-            DesktopWindow.BringToForeground();
+            
+            StartHooks();
         }
     }
 }

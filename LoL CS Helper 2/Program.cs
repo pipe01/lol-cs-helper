@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace LoL_CS_Helper_2
 {
@@ -16,9 +17,14 @@ namespace LoL_CS_Helper_2
         {
             //Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
 
-            new frmOverlay(Configuration.LoadFromFile("config.json")).ShowDialog();
+            Console.WriteLine("Loading...");
 
-            Loop();
+            var frm = new frmOverlay(Configuration.LoadFromFile("config.json"));
+
+            ConsoleHelper.Hide();
+
+            Application.EnableVisualStyles();
+            Application.Run(frm);
         }
 
         static void Loop()

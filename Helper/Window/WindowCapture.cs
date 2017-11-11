@@ -35,7 +35,7 @@ namespace Helper
         /// </summary>
         public static Bitmap CaptureWindow()
         {
-            var pointer = DesktopWindow.Pointer;
+            var pointer = DesktopWindow.Handle;
 
             if (pointer == IntPtr.Zero)
                 return null;
