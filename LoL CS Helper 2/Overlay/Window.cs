@@ -46,6 +46,14 @@ namespace LoL_CS_Helper_2.Overlay
         }
 
         /// <summary>
+        /// Runs the application with the overlay form.
+        /// </summary>
+        public void Run()
+        {
+            Application.Run(_Overlay);
+        }
+
+        /// <summary>
         /// Set the current layout.
         /// </summary>
         /// <typeparam name="T">The layout type.</typeparam>

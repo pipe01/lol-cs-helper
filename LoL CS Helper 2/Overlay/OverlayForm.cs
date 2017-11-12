@@ -21,7 +21,7 @@ namespace LoL_CS_Helper_2.Overlay
         
         private const int WM_MOVE = 0x0003;
         private const int WM_ACTIVATE = 0x0006;
-
+    
         public OverlayForm(Configuration config, IntPtr launcherHandle)
         {
             _Config = config;
@@ -29,20 +29,25 @@ namespace LoL_CS_Helper_2.Overlay
 
             _Hooks = new GlobalHooks(this.Handle);
             _Hooks.CallWndProc.CallWndProc += CallWndProc_CallWndProc;
-            _Hooks.CallWndProc.Start();
             
             this.Visible = false;
             this.BackColor = Color.Magenta;
             this.TransparencyKey = this.BackColor;
             this.FormBorderStyle = FormBorderStyle.None;
-            this.ShowInTaskbar = false;
             this.Text = "Overlay";
+
+            this.Load += OverlayForm_Load;
         }
 
+        private void OverlayForm_Load(object sender, EventArgs e)
+        {
+            _Hooks.CallWndProc.Start();
+            this.Refresh();
+        }
+
+        int count = 0;
         private void CallWndProc_CallWndProc(IntPtr Handle, IntPtr Message, IntPtr wParam, IntPtr lParam)
         {
-            Debug.WriteLine("message");
-
             int msg = Message.ToInt32();
 
             if (Handle == _LauncherHandle)
@@ -65,21 +70,11 @@ namespace LoL_CS_Helper_2.Overlay
 
         protected override void WndProc(ref Message m)
         {
+            Console.WriteLine(count++);
+
             _Hooks?.ProcessWindowMessage(ref m);
 
-            if (m.Msg == WM_ACTIVATE)
-            {
-                int wparam = m.WParam.ToInt32();
-
-                if (wparam == 1 || wparam == 2) //WA_ACTIVE
-                {
-                    DesktopWindow.BringToForeground();
-                }
-            }
-            else
-            {
-                base.WndProc(ref m);
-            }
+            base.WndProc(ref m);
         }
 
         protected override CreateParams CreateParams

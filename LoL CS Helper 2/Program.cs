@@ -25,11 +25,9 @@ namespace LoL_CS_Helper_2
             //var frm = new frmOverlay(Configuration.LoadFromFile("config.json"));
 
             Window w = new Window(Configuration.LoadFromFile("config.json"));
-            w.Show();
+            w.Run();
 
-            ConsoleHelper.Hide();
-
-            Application.Run();
+            //ConsoleHelper.Hide();
         }
 
         static void Loop()
