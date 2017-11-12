@@ -46,14 +46,17 @@ namespace LoL_CS_Helper_2.Overlay.Layouts
 
         private void DebugDraw(Graphics g, Size size)
         {
-            foreach (var item in Regions)
+            lock (g)
             {
-                var abs = item.GetAbsoluteBounds(size.Width, size.Height);
+                foreach (var item in Regions)
+                {
+                    var abs = item.GetAbsoluteBounds(size.Width, size.Height);
 
-                g.DrawRectangle(_DebugPen, abs);
+                    g.DrawRectangle(_DebugPen, abs);
+                }
+
+                g.DrawRectangle(_DebugPen, new Rectangle(0, 0, size.Width - 1, size.Height - 1));
             }
-
-            g.DrawRectangle(_DebugPen, new Rectangle(0, 0, size.Width - 1, size.Height - 1));
         }
     }
 }

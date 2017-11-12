@@ -44,8 +44,7 @@ namespace LoL_CS_Helper_2.Overlay
             _Hooks.CallWndProc.Start();
             this.Refresh();
         }
-
-        int count = 0;
+        
         private void CallWndProc_CallWndProc(IntPtr Handle, IntPtr Message, IntPtr wParam, IntPtr lParam)
         {
             int msg = Message.ToInt32();
@@ -70,8 +69,6 @@ namespace LoL_CS_Helper_2.Overlay
 
         protected override void WndProc(ref Message m)
         {
-            Console.WriteLine(count++);
-
             _Hooks?.ProcessWindowMessage(ref m);
 
             base.WndProc(ref m);
