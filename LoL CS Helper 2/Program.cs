@@ -1,5 +1,6 @@
 ﻿using Helper;
 using Helper.Counters;
+using LoL_CS_Helper_2.Overlay;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,16 +16,20 @@ namespace LoL_CS_Helper_2
     {
         static void Main(string[] args)
         {
-            //Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
-
             Console.WriteLine("Loading...");
+
+            //Analyser.Window.GraphicsWindow.SetTestPicture(Image.FromFile("test.png") as Bitmap);
+            
+            Application.EnableVisualStyles();
 
             //var frm = new frmOverlay(Configuration.LoadFromFile("config.json"));
 
+            Window w = new Window(Configuration.LoadFromFile("config.json"));
+            w.Show();
+
             ConsoleHelper.Hide();
 
-            Application.EnableVisualStyles();
-            //Application.Run(frm);
+            Application.Run();
         }
 
         static void Loop()
