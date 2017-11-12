@@ -13,6 +13,14 @@ namespace LoL_CS_Helper_2.Overlay
 {
     public class OverlayForm : Form
     {
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        private const int GWL_EX_STYLE = -20;
+        private const int WS_EX_APPWINDOW = 0x00040000, WS_EX_TOOLWINDOW = 0x00000080;
+
+
         private Configuration _Config;
         private GlobalHooks _Hooks;
         private IntPtr _LauncherHandle;
@@ -37,6 +45,8 @@ namespace LoL_CS_Helper_2.Overlay
             this.Text = "Overlay";
 
             this.Load += OverlayForm_Load;
+
+            HideTaskbar();
         }
 
         private void OverlayForm_Load(object sender, EventArgs e)
@@ -65,6 +75,11 @@ namespace LoL_CS_Helper_2.Overlay
                         this.Visible = activated;
                         break;
                 }
+        }
+
+        private void HideTaskbar()
+        {
+            SetWindowLong(this.Handle, GWL_EX_STYLE, (GetWindowLong(this.Handle, GWL_EX_STYLE) | WS_EX_TOOLWINDOW) & ~WS_EX_APPWINDOW);
         }
 
         protected override void WndProc(ref Message m)
